@@ -20,6 +20,36 @@ Telegram-бот для генерации изображений с систем
 Railway создаст БД и добавит переменные окружения:
 DATABASE_URL=postgresql+asyncpg://...
 
+# запуск systemctl
+
+sudo vim /etc/systemd/system/myapp.service
+
+[Unit]
+Description=FastAPI app (main.py)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/user/sheep
+Environment="PATH=/home/user/sheep/venv/bin"
+ExecStart=/home/user/sheep/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl restart myapp
+
+sudo systemctl status myapp - логи ошибок
+sudo journalctl -u myapp -f - увидите логи FastAPI
+
+Убить процесс:
+sudo systemctl stop myapp
+
+
+
 # Запуск локально
 
 ## 🧪 Технологии
